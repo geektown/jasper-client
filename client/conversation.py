@@ -29,6 +29,10 @@ class Conversation(object):
             self._logger.debug("Started listening for keyword '%s'",
                                self.persona)
             threshold, transcribed = self.mic.passiveListen(self.persona)
+            
+            print 'conversation threshold is ', threshold
+            print 'transcribed is ', transcribed
+            
             self._logger.debug("Stopped listening for keyword '%s'",
                                self.persona)
 

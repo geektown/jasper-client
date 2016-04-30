@@ -179,6 +179,8 @@ class EspeakTTS(AbstractTTSEngine):
                          '-s', self.words_per_minute,
                          '-w', fname,
                          phrase]
+        # 使用讯飞的语音输出        
+        cmd = ['/home/pi/xunfei/Linux_voice_1.109/bin/tts_sample', '/run/shm/tts_temp002.wav', phrase]
         cmd = [str(x) for x in cmd]
         self._logger.debug('Executing %s', ' '.join([pipes.quote(arg)
                                                      for arg in cmd]))
@@ -188,8 +190,9 @@ class EspeakTTS(AbstractTTSEngine):
             output = f.read()
             if output:
                 self._logger.debug("Output was: '%s'", output)
-        self.play(fname)
-        os.remove(fname)
+        # self.play(fname)
+        self.play('/run/shm/tts_temp002.wav')
+        # os.remove(fname)
 
 
 class FestivalTTS(AbstractTTSEngine):

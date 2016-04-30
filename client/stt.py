@@ -15,7 +15,7 @@ import yaml
 import jasperpath
 import diagnose
 import vocabcompiler
-
+import pyaudio
 
 class AbstractSTTEngine(object):
     """
@@ -169,7 +169,23 @@ class PocketSphinxSTT(AbstractSTTEngine):
                 self._logger.debug(line.strip())
             f.truncate()
 
-        transcribed = [result[0]]
+        # transcribed = [result[0]]
+        # p = subprocess.Popen(['/home/pi/xunfei/Linux_voice_1.109/bin/stt_sample'],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=False)
+        # print os.path.abspath(fp)
+        wav2write = wave.open('/run/shm/001.wav', 'w')
+        wav2write.setnchannels(1)
+        wav2write.setsampwidth(pyaudio.get_sample_size(pyaudio.paInt16))
+        wav2write.setframerate(16000)
+        wav2write.writeframesraw(data)
+        wav2write.close()
+        # /home/pi/xunfei/Linux_voice_1.109/bin/wav/temp.wav
+        p = subprocess.Popen(['/home/pi/xunfei/Linux_voice_1.109/bin/stt_sample', '/run/shm/001.wav'],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=False)
+        stdout,stderr = p.communicate()
+        # transcribed = (stdout.strip('\n')).decode('utf-8') + "['JASPER']"
+        print stdout + stderr
+        mock = ['Time','几点', '天气', '小爱', 'JASPER']
+        transcribed = mock
+        # print 'stt print: ' + transcribed
         self._logger.info('Transcribed: %r', transcribed)
         return transcribed
 
