@@ -3,7 +3,7 @@ import random
 import re
 from client import jasperpath
 
-WORDS = ["JOKE", "KNOCK KNOCK"]
+WORDS = ["JOKE", "笑话"]
 
 
 def getRandomJoke(filename=jasperpath.data('text', 'JOKES.txt')):

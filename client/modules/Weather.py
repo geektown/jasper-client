@@ -9,7 +9,8 @@ import bs4
 from client.app_utils import getTimezone
 from semantic.dates import DateService
 
-WORDS = ["WEATHER", "TODAY", "TOMORROW"]
+# WORDS = ["WEATHER", "TODAY", "TOMORROW"]
+WORDS = ["天气", "今天", "明天", "温度"]
 
 
 def replaceAcronyms(text):
@@ -168,5 +169,4 @@ def isValid(text):
         Arguments:
         text -- user-input, typically transcribed speech
     """
-    return bool(re.search(r'\b(weathers?|temperature|forecast|outside|hot|' +
-                          r'cold|jacket|coat|rain)\b', text, re.IGNORECASE))
+    return bool(re.search(r'(天气?|温度|预报|外面|热|' + r'冷|夹克|外套|下雨)', '天气如何', re.IGNORECASE))
