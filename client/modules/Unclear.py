@@ -18,9 +18,9 @@ def handle(text, mic, profile):
                    number)
     """
 
-    messages = ["I'm sorry, could you repeat that?",
-                "My apologies, could you try saying that again?",
-                "Say that again?", "I beg your pardon?"]
+    messages = ["hi 能重复一次吗",
+                "抱歉，能再说一遍吗？",
+                "oh 请重复一遍", "不好意思，没听清楚。"]
 
     message = random.choice(messages)
 
