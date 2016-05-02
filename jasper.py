@@ -108,10 +108,9 @@ class Jasper(object):
 
     def run(self):
         if 'first_name' in self.config:
-            salutation = ("Hello 很高兴为你服务, %s?"
-                          % self.config["first_name"])
+            salutation = ("Hi 很高兴为你服务，请叫我小爱或者可可小爱。我现在可以提供天气预报，时间，简单的数字计算等服务。请试试看吧！")
         else:
-            salutation = "Hello How can I be of service?"
+            salutation = "Hello 我是可可小爱，随时为你服务。"
         self.mic.say(salutation)
 
         conversation = Conversation("小爱", self.mic, self.config)
