@@ -64,8 +64,10 @@ class Brain(object):
         Arguments:
         text -- user input, typically speech, to be parsed by a module
         """
+        print texts
         for module in self.modules:
             for text in texts:
+                self._logger.debug("查找 %s 是否匹配模块 %s", text.encode('utf-8'), module.__name__)
                 if module.isValid(text):
                     self._logger.debug("'%s' is a valid phrase for module " +
                                        "'%s'", text, module.__name__)

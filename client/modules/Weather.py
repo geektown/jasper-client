@@ -169,4 +169,4 @@ def isValid(text):
         Arguments:
         text -- user-input, typically transcribed speech
     """
-    return bool(re.search(r'(天气?|温度|预报|外面|热|' + r'冷|夹克|外套|下雨)', '天气如何', re.IGNORECASE))
+    return bool(re.search(r'(天气?|温度|预报|外面|热|' + r'冷|夹克|外套|下雨)', text, re.IGNORECASE))

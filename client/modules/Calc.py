@@ -4,8 +4,8 @@ import re
 from client.app_utils import getTimezone
 from semantic.dates import DateService
 
-# WORDS = ["TIME"]
-WORDS = ["几点"]
+WORDS = ["等于"]
+
 
 
 def handle(text, mic, profile):
@@ -23,7 +23,7 @@ def handle(text, mic, profile):
     now = datetime.datetime.now(tz=tz)
     service = DateService()
     response = service.convertTime(now)
-    mic.say("当前时间是%s点%s分." % (now.hour, now.minute))
+    mic.say("5加8等于十三" )
 
 
 def isValid(text):
@@ -33,4 +33,4 @@ def isValid(text):
         Arguments:
         text -- user-input, typically transcribed speech
     """
-    return bool(re.search(u'几点', text, re.IGNORECASE))
+    return bool(re.search(u'等于', text, re.IGNORECASE))

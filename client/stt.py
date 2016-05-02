@@ -17,6 +17,8 @@ import diagnose
 import vocabcompiler
 import pyaudio
 
+import jieba
+
 class AbstractSTTEngine(object):
     """
     Generic parent class for all STT engines
@@ -180,13 +182,15 @@ class PocketSphinxSTT(AbstractSTTEngine):
         wav2write.close()
         # /home/pi/xunfei/Linux_voice_1.109/bin/wav/temp.wav
         p = subprocess.Popen(['/home/pi/xunfei/Linux_voice_1.109/bin/stt_sample', '/run/shm/001.wav'],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=False)
-        stdout,stderr = p.communicate()
+        stdout,stderr = p.communicate() 
         # transcribed = (stdout.strip('\n')).decode('utf-8') + "['JASPER']"
-        print stdout + stderr
-        mock = ['Time','几点', '天气', '小爱', 'JASPER']
-        transcribed = mock
+        print ("stdout + stderr decode utf-8: %s"%((stdout + stderr).decode('utf-8')))
+        mock = ['Time','几点', '天气', '小爱']
+        seg_list = list( jieba.cut(stdout.decode('utf-8')) )
+        transcribed = seg_list
+        print 'print transcribed ',transcribed
         # print 'stt print: ' + transcribed
-        self._logger.info('Transcribed: %r', transcribed)
+        self._logger.info('logger Transcribed: %r', transcribed)
         return transcribed
 
     @classmethod
