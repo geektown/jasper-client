@@ -188,7 +188,7 @@ class PocketSphinxSTT(AbstractSTTEngine):
         mock = ['Time','几点', '天气', '小爱']
         seg_list = list( jieba.cut(stdout.decode('utf-8')) )
         transcribed = seg_list
-        print 'print transcribed ',transcribed
+        # print 'transcribed %s', transcribed
         # print 'stt print: ' + transcribed
         self._logger.info('logger Transcribed: %r', transcribed)
         return transcribed

@@ -180,6 +180,8 @@ class Mic:
 
         if any(PERSONA.decode('utf-8') in phrase for phrase in transcribed):
             return (THRESHOLD, PERSONA)
+        if any("小艾".decode('utf-8') in phrase for phrase in transcribed):
+            return (THRESHOLD, PERSONA)
 
         return (False, transcribed)
 

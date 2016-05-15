@@ -64,6 +64,8 @@ class Brain(object):
         Arguments:
         text -- user input, typically speech, to be parsed by a module
         """
+        dialog = ''.join(texts)
+        print dialog
         print texts
         for module in self.modules:
             
@@ -73,12 +75,12 @@ class Brain(object):
                     self._logger.debug("'%s' is a valid phrase for module " +
                                        "'%s'", text, module.__name__)
                     try:
-                        module.handle(text, self.mic, self.profile)
+                        module.handle(dialog, self.mic, self.profile)
                     except Exception:
                         self._logger.error('Failed to execute module',
                                            exc_info=True)
-                        self.mic.say("I'm sorry. I had some trouble with " +
-                                     "that operation. Please try again later.")
+                        self.mic.say("对不起，我当前无法完成这个指令 " +
+                                     "请稍后再试试吧。")
                     else:
                         self._logger.debug("Handling of phrase '%s' by " +
                                            "module '%s' completed", text,
