@@ -12,6 +12,8 @@ import argparse
 from client import tts, stt, jasperpath, diagnose
 from client.conversation import Conversation
 
+import jieba
+
 # Add jasperpath.LIB_PATH to sys.path
 sys.path.append(jasperpath.LIB_PATH)
 
@@ -108,12 +110,13 @@ class Jasper(object):
 
     def run(self):
         if 'first_name' in self.config:
-            salutation = ("Hi 很高兴为你服务，请叫我小爱或者可可小爱。我现在可以提供天气预报，时间，简单的数字计算等服务。请试试看吧！")
+            salutation = ("Hi 很高兴为你服务，请叫我小爱或者可可小爱。我现在可以提供天气预报，时间，简单的数字计算等服务。你可以通过 hello 可可小爱来跟我打招呼。")
         else:
             salutation = "Hello 我是可可小爱，随时为你服务。"
+        print jieba.cut("hello可可小爱")
         self.mic.say(salutation)
 
-        conversation = Conversation("小爱", self.mic, self.config)
+        conversation = Conversation("hello|小爱|可可小爱|咳咳|可可|小艾|可可小", self.mic, self.config)
         conversation.handleForever()
 
 if __name__ == "__main__":
@@ -131,8 +134,7 @@ if __name__ == "__main__":
         logger.setLevel(logging.DEBUG)
 
     if not args.no_network_check and not diagnose.check_network_connection():
-        logger.warning("Network not connected. This may prevent Jasper from " +
-                       "running properly.")
+        logger.warning(u"没有网络连接，系统运行异常。")
 
     if args.diagnose:
         failed_checks = diagnose.run()
