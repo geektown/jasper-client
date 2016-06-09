@@ -42,8 +42,8 @@ def getJokes():
     if(content):
         print(content)
     data = json.loads(content)
-    print(data["showapi_res_body"]["contentlist"][0]['text']) ## 第一个笑话
-    speechText = data["showapi_res_body"]["contentlist"][0]['text'].encode('utf-8')
+    print(random.choice(data["showapi_res_body"]["contentlist"])['text']) ## 随机挑选一个笑话
+    speechText = (random.choice(data["showapi_res_body"]["contentlist"])['text']).encode('utf-8')
     print speechText
     return speechText
     
