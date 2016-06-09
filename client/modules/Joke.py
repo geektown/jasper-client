@@ -3,6 +3,9 @@ import random
 import re
 from client import jasperpath
 
+# baidu apistore
+import sys, urllib, urllib2, json
+
 WORDS = ["JOKE", "笑话"]
 
 
@@ -30,8 +33,25 @@ def getRandomJoke(filename=jasperpath.data('text', 'JOKES.txt')):
     joke = random.choice(jokes)
     return joke
 
-
+def getJokes():
+    url = 'http://apis.baidu.com/showapi_open_bus/showapi_joke/joke_text?page=1'
+    req = urllib2.Request(url)
+    req.add_header("apikey", "9306b0063beeaabe3d26f6561e34e546")
+    resp = urllib2.urlopen(req)
+    content = resp.read()
+    if(content):
+        print(content)
+    data = json.loads(content)
+    print(data["showapi_res_body"]["contentlist"][0]['text']) ## 第一个笑话
+    speechText = data["showapi_res_body"]["contentlist"][0]['text'].encode('utf-8')
+    print speechText
+    return speechText
+    
 def handle(text, mic, profile):
+    mic.say(getJokes())
+
+
+def handle2(text, mic, profile):
     """
         Responds to user-input, typically speech text, by telling a joke.
 
@@ -63,4 +83,4 @@ def isValid(text):
         Arguments:
         text -- user-input, typically transcribed speech
     """
-    return bool(re.search(r'\bjoke\b', text, re.IGNORECASE))
+    return bool(re.search(u'笑话', text, re.IGNORECASE))
