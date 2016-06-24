@@ -26,7 +26,7 @@ def handle(text, mic, profile):
         profile -- contains information related to the user (e.g., phone
                    number)
     """
-
+    
     url = 'http://apis.baidu.com/apistore/weatherservice/cityname?citypinyin=nanjing'
     req = urllib2.Request(url)
     req.add_header("apikey", "9306b0063beeaabe3d26f6561e34e546")
@@ -42,11 +42,11 @@ def handle(text, mic, profile):
     print(data['retData']['l_tmp']) ## 16
     print(data['retData']['h_tmp']) ## 25
     print(data['retData']['WD']) ## 南风
-    print(data['retData']['WS']) ## 微风
+    print(data['retData']['WS']) ## 10~17km/h
     
     print isinstance(data['retData']['city'], unicode)
     
-    speechText = data['retData']['city'].encode('utf-8') + data['retData']['weather'].encode('utf-8')+ "，温度" + data['retData']['temp'].encode('utf-8') + "摄氏度。" + "最低温度" + data['retData']['l_tmp'].encode('utf-8') + "度。" + "最高温度" + data['retData']['h_tmp'].encode('utf-8') + "度。" + data['retData']['WD'].encode('utf-8')  + data['retData']['WS'].encode('utf-8') 
+    speechText = data['retData']['city'].encode('utf-8') + data['retData']['weather'].encode('utf-8')+ "，温度" + data['retData']['temp'].encode('utf-8') + "摄氏度。" + "最低温度" + data['retData']['l_tmp'].encode('utf-8') + "度。" + "最高温度" + data['retData']['h_tmp'].encode('utf-8') + "度。" + data['retData']['WD'].encode('utf-8')
     #   
     print(speechText)
     

@@ -195,6 +195,15 @@ class Mic:
         if options:
             return options[0]
 
+    def generalListen(self, THRESHOLD=1000, LISTEN=True, MUSIC=False):
+        """
+            通用对话模式下主动监听，监听的所有内容都交给后台的状态机处理。
+        """
+
+        options = self.activeListenToAllOptions(THRESHOLD, LISTEN, MUSIC)
+        return options            
+            
+            
     def activeListenToAllOptions(self, THRESHOLD=None, LISTEN=True,
                                  MUSIC=False):
         """
@@ -206,14 +215,15 @@ class Mic:
         RATE = 16000
         CHUNK = 1024
         LISTEN_TIME = 12
-
+        print "in function activeListen"
         # check if no threshold provided
         if THRESHOLD is None:
             THRESHOLD = self.fetchThreshold()
-
+        print 'try to beep_hi'
         self.speaker.play(jasperpath.data('audio', 'beep_hi.wav'))
 
         # prepare recording stream
+        print 'try to recording stream in activeListen'
         stream = self._audio.open(format=pyaudio.paInt16,
                                   channels=1,
                                   rate=RATE,
@@ -239,7 +249,7 @@ class Mic:
             # TODO: 0.8 should not be a MAGIC NUMBER!
             if average < THRESHOLD * 0.8:
                 break
-
+        print 'recording finish, try to beep_lo'
         self.speaker.play(jasperpath.data('audio', 'beep_lo.wav'))
 
         # save the audio data
@@ -254,7 +264,9 @@ class Mic:
             wav_fp.writeframes(''.join(frames))
             wav_fp.close()
             f.seek(0)
-            return self.active_stt_engine.transcribe(f)
+            result = self.active_stt_engine.transcribe(f)
+            print '#'.join(result)
+            return result
 
     def say(self, phrase,
             OPTIONS=" -vdefault+m3 -p 40 -s 160 --stdout > say.wav"):
