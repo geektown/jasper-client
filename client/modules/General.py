@@ -23,6 +23,7 @@ def handle(text, mic, profile):
     if response == u"对话结束":
         return
     else:
+        mic.playMP3('/home/pi/tangshi/05-5.mp3')
         print "try to activeListen"
         listen = mic.generalListen() # 注意threadhold设置
         print 'try to listen in handle and got ' + "#".join(listen)

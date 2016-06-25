@@ -9,7 +9,7 @@ import audioop
 import pyaudio
 import alteration
 import jasperpath
-
+import os
 
 class Mic:
 
@@ -273,3 +273,6 @@ class Mic:
         # alter phrase before speaking
         phrase = alteration.clean(phrase)
         self.speaker.say(phrase)
+        
+    def playMP3(self, mp3):
+        os.system('omxplayer ' + mp3)
