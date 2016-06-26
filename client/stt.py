@@ -281,7 +281,7 @@ class JuliusSTT(AbstractSTTEngine):
                        if text]
         if not transcribed:
             transcribed.append('')
-        self._logger.info('Transcribed: %r', transcribed)
+        self._logger.info(u'Transcribed: %r', transcribed.encode('utf-8'))
         return transcribed
 
     @classmethod

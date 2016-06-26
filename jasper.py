@@ -116,7 +116,7 @@ class Jasper(object):
         print " ".join(jieba.cut("hello可可小爱"))
         self.mic.say(salutation)
 
-        conversation = Conversation("hello|小爱|可可小爱|咳咳|可可|小艾|可可小", self.mic, self.config)
+        conversation = Conversation("hello|小爱|可可小爱|咳咳|可可|小艾|可可|哈喽", self.mic, self.config)
         conversation.handleForever()
 
 if __name__ == "__main__":

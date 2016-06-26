@@ -65,12 +65,12 @@ class Brain(object):
         text -- user input, typically speech, to be parsed by a module
         """
         dialog = ''.join(texts)
-        print dialog
-        print texts
+        print dialog.encode('utf-8')
+        print self.modules
         for module in self.modules:
             
             for text in texts:
-                print ("查找 %s 是否匹配模块 %s" %(text.encode('utf-8'), module.__name__))
+                # print ("查找 %s 是否匹配模块 %s" %(text.encode('utf-8'), module.__name__))
                 if module.isValid(text):
                     self._logger.debug("'%s' is a valid phrase for module " +
                                        "'%s'", text, module.__name__)
@@ -87,8 +87,9 @@ class Brain(object):
                                            module.__name__)
                     finally:
                         return
-                else:
-                    print u"调用通用模块"                
-                    
+                
+        
         self._logger.debug("No module was able to handle any of these " +
                            "phrases: %r", texts)
+        # 没有匹配的模块，调用通用对话
+        print u"调用通用模块"

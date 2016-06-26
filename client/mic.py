@@ -177,8 +177,9 @@ class Mic:
             f.seek(0)
             # check if PERSONA was said
             transcribed = self.passive_stt_engine.transcribe(f)
+
+            print "check passiveListen for " , PERSONA.decode('utf-8')
         for p in PERSONA.split("|"):
-            print "check passiveListen for " , p.decode('utf-8')
             if any(p.decode('utf-8') in phrase for phrase in transcribed):
                 return (THRESHOLD, p)
         
