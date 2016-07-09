@@ -1,6 +1,1 @@
-{"say":"/home/pi/tangshi/05-5.mp3", "next":"还需要再来一遍吗？"}
-{"say":"请说出唐诗的名称。", "next":"activeListen"}
-{"say":"本次得分85分[本轮对话结束]", "next":"finish"}
-{"say":"唐诗播放完毕[本轮对话结束]", "next":"finish"}
-{"say":"不好意思没有听清楚,请说出唐诗的名称。", "next":"activeListen"}
-{"say":"我还没有学会这个功能，请试试其他的吧", "next":"activeListen"}
+[{"cmd":"say", "value":"唐诗已经找到，即将播放。"}, {"cmd":"sleep", "value":"3"}, {"cmd":"play", "value":"/home/pi/tangshi/05-5.mp3"}, {"cmd":"exit"}]

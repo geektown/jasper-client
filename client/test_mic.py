@@ -31,3 +31,10 @@ class Mic:
 
     def say(self, phrase, OPTIONS=None):
         self.outputs.append(phrase)
+        
+    def playMP3(self, phrase, OPTIONS=None):
+        self.outputs.append(phrase)
+        
+    def generalListen(self):
+        print "activeListen"
+        return "this is what user say."

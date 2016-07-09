@@ -2,122 +2,38 @@
 import random
 import re
 from client import jasperpath
+import time
 
 # baidu apistore
 import sys, urllib, urllib2, json
-
+PRIORITY = 999
 WORDS = ["GENERAL", "状态测试"]
 
-def mockRobotResponse(filename=jasperpath.data('text', 'jasper-conversation.json')):
-    jsonFile = open(filename, "r")
-    conversation = list()
-    for text in jsonFile.readlines():
-        conversation.append(text)
-    return conversation
-    
-def getResponse(userInput):
-    print userInput.encode("utf-8")
-    return random.choice(mockRobotResponse())
+def request(msg):
+    return [{"cmd":"say", "value":"唐诗已经找到，即将播放。"}, {"cmd":"sleep", "value":"3"}, {"cmd":"play", "value":"/home/pi/tangshi/05-5.mp3"}, {"cmd":"say", "value":"需要再听一遍吗？"}, {"cmd":"exit"}]
 
-def handle0(text, mic, profile):
-    robotSay = json.loads(getResponse(text))
-    next = robotSay["next"]
-    if next != "finish":
-        print('say or play ' + robotSay["say"].encode('utf-8')) + " ->>> and next is " + next.encode("utf-8")
-        if next == "activeListen":
-            print "try to activeListen"
+def handle(text, mic, profile):
+    response = request("user input ")
+    for instruction in response:
+        if instruction['cmd'] == "say":
+            print "say", instruction['value']
+            mic.say(instruction['value'])
+        elif instruction['cmd'] == "play":
+            print "paly media", instruction['value']
+            mic.playMP3(instruction['value']) 
+        elif instruction['cmd'] == "exit":
+            print "service over , exit"
+        elif instruction['cmd'] == "listen":
+            print "listen"
             listen = mic.generalListen() # 注意threadhold设置
             print 'try to listen in handle and got ' + "#".join(listen)
             if listen != None :
                 handle(text, mic, profile)
             else:
                 mic.say("there is no answer. conversation over.")
-        else:
-            print "say " + next.encode('utf-8')
-        robotSay = json.loads(getResponse(text))
-        next = robotSay["next"]
-    print(robotSay["say"].encode('utf-8')) + " ->>> and next is " + next.encode("utf-8")
-    
-def handle(text, mic, profile):
-    robotSay = json.loads(getResponse(text))
-    next = robotSay["next"]
-    
-    if next == "finish" :
-        print(robotSay["say"].encode('utf-8')) + " ->>> and next is " + next.encode("utf-8")
-        if bool(re.search(u'.mp3', robotSay["say"], re.IGNORECASE)):
-            mic.playMP3('/home/pi/tangshi/05-5.mp3') 
-        else:
-            mic.say(robotSay["say"].encode('utf-8'))
-        return
-
-    print('say or play ' + robotSay["say"].encode('utf-8')) + " ->>> and next is " + next.encode("utf-8")
-    if bool(re.search(u'.mp3', robotSay["say"], re.IGNORECASE)):
-        mic.playMP3('/home/pi/tangshi/05-5.mp3') 
-    else:
-        print "say " + robotSay["say"].encode('utf-8')
-        mic.say(robotSay["say"].encode('utf-8'))
-        
-    if next == "activeListen":
-        print "try to activeListen"
-        listen = mic.generalListen() # 注意threadhold设置
-        print 'try to listen in handle and got ' + "#".join(listen)
-        if listen != None :
-            handle(text, mic, profile)
-        else:
-            mic.say("there is no answer. conversation over.")
-    else:
-        mic.say(next.encode("utf-8"))
-        listen = mic.generalListen() # 注意threadhold设置
-        print 'try to listen in handle and got ' + "#".join(listen)
-        if listen != None :
-            handle(text, mic, profile)
-        else:
-            mic.say("there is no answer. conversation over.")
-        
-
-
-def handle3(text, mic, profile):
-    response = getResponse(text)
-    print response
-    # 如果返回的json中包含，play字段，则先play或者say，然后再判断是否有继续对话的提示，或者
-    # {'play':'ssss.wav | this is a text', 'continue':'继续提问的内容', 'endup':'true'}
-    mic.say(response.encode('utf-8'))
-    if response == u"对话结束":
-        return
-    else:
-        mic.playMP3('/home/pi/tangshi/05-5.mp3')
-        print "try to activeListen"
-        listen = mic.generalListen() # 注意threadhold设置
-        print 'try to listen in handle and got ' + "#".join(listen)
-        if listen != None :
-            handle(text, mic, profile)
-    
-
-
-def handle2(text, mic, profile):
-    """
-        Responds to user-input, typically speech text, by telling a joke.
-
-        Arguments:
-        text -- user-input, typically transcribed speech
-        mic -- used to interact with the user (for both input and output)
-        profile -- contains information related to the user (e.g., phone
-                   number)
-    """
-    joke = getRandomJoke()
-
-    mic.say("Knock knock")
-
-    def firstLine(text):
-        mic.say(joke[0])
-
-        def punchLine(text):
-            mic.say(joke[1])
-
-        punchLine(mic.activeListen())
-
-    firstLine(mic.activeListen())
-
+        elif instruction['cmd'] == "sleep":
+            print 'now to sleep for ', instruction['value'], ' seconds'
+            time.sleep(int(instruction['value']))
 
 def isValid(text):
     """
