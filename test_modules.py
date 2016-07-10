@@ -2,7 +2,7 @@
 # -*- coding: utf-8-*-
 import unittest
 from client import test_mic, diagnose, jasperpath
-from client.modules import Time, Computer
+from client.modules import Time, Computer, Affairs
 
 DEFAULT_PROFILE = {
     'prefers_email': False,
@@ -33,6 +33,11 @@ class TestModules(unittest.TestCase):
         module.handle(query, mic, self.profile)
         return mic.outputs
 
+    def test_affairs(self):
+        query = u"下周二下午3点提醒我参加家长会。"
+        inputs = []
+        self.runConversation(query, inputs, Affairs)        
+        
     def testTime(self):
         query = u"现在几点了"
         inputs = []
