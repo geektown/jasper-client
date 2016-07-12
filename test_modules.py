@@ -2,7 +2,7 @@
 # -*- coding: utf-8-*-
 import unittest
 from client import test_mic, diagnose, jasperpath
-from client.modules import Time, Computer, Affairs
+from client.modules import Time, Computer, Affairs, Baike
 
 DEFAULT_PROFILE = {
     'prefers_email': False,
@@ -32,7 +32,12 @@ class TestModules(unittest.TestCase):
         mic = test_mic.Mic(inputs)
         module.handle(query, mic, self.profile)
         return mic.outputs
-
+        
+    def test_baike(self):
+        query = u"清华大学是什么？"
+        inputs = []
+        self.runConversation(query, inputs, Baike) 
+        
     def test_affairs(self):
         query = u"下周二下午3点提醒我参加家长会。"
         inputs = []
@@ -43,14 +48,14 @@ class TestModules(unittest.TestCase):
         inputs = []
         self.runConversation(query, inputs, Time)
         
-    def test_wakeup_computer(self):
+    def ttest_wakeup_computer(self):
         query = u"开启服务器"
         inputs = []
         self.runConversation(query,inputs, Computer)
         for input in inputs:
             print input.decode('utf-8')
         
-    def test_shutdown_computer(self):
+    def ttest_shutdown_computer(self):
         query = u"关闭服务器"
         inputs = []
         self.runConversation(query,inputs, Computer)
