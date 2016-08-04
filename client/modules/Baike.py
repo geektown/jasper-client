@@ -12,6 +12,7 @@ WORDS = ["百科", "什么是"]
 def getBaikeContent(item):
     print "baike query item = ", item
     url = "http://wapbaike.baidu.com/item/"+urllib.quote(item.encode('utf-8'))
+    print url
     html = urllib.urlopen(url)
     content = html.read()
     html.close()
@@ -31,7 +32,8 @@ def getBaikeContent(item):
     return result
     
 def handle(text, mic, profile):
-    mic.say(getBaikeContent(u'马尔代夫'))
+    item = text.replace(u'什么是','').replace(u"是什么", '').replace(u'？','').replace(u'开始检测 ','').replace(u'\n','')
+    mic.say(getBaikeContent(item))
 
 
 

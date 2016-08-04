@@ -110,7 +110,7 @@ class Jasper(object):
 
     def run(self):
         if 'first_name' in self.config:
-            salutation = ("Hi 很高兴为你服务，请叫我小爱或者可可小爱。我现在可以提供天气预报，时间，简单的数字计算等服务。你可以通过 hello 可可小爱来跟我打招呼。")
+            salutation = ("Hi 很高兴为你服务，请叫我小爱或者可可小爱。我现在可以提供天气预报，时间查询，简单的数学计算，读唐诗，讲笑话，回答百科知识等服务。你可以通过 hello 可可小爱来跟我打招呼。")
         else:
             salutation = "Hello 我是可可小爱，随时为你服务。"
         print " ".join(jieba.cut("hello可可小爱"))

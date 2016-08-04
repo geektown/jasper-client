@@ -37,7 +37,11 @@ class TestModules(unittest.TestCase):
         query = u"清华大学是什么？"
         inputs = []
         self.runConversation(query, inputs, Baike) 
-        
+    def test_baike2(self):
+        query = u"什么是黑洞？"
+        inputs = []
+        self.runConversation(query, inputs, Baike) 
+                
     def test_affairs(self):
         query = u"下周二下午3点提醒我参加家长会。"
         inputs = []
