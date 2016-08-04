@@ -26,7 +26,7 @@ def getBaikeContent(item):
         
         for pagraph in summary[0].getText().split(u'。'):
             result = result + "。" + pagraph.encode('utf-8').strip()
-            if len(str(result)) > 1200:
+            if len(str(result)) > 500:
                 break
     print result, str(len(result))
     return result
