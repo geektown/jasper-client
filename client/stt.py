@@ -17,7 +17,7 @@ import diagnose
 import vocabcompiler
 import pyaudio
 
-import jieba
+# import jieba
 
 class AbstractSTTEngine(object):
     """
@@ -184,14 +184,14 @@ class PocketSphinxSTT(AbstractSTTEngine):
         p = subprocess.Popen(['/home/pi/xunfei/Linux_voice_1.109/bin/stt_sample', '/run/shm/001.wav'],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=False)
         stdout,stderr = p.communicate() 
         # transcribed = (stdout.strip('\n')).decode('utf-8') + "['JASPER']"
-        print ("stdout + stderr decode utf-8: %s"%((stdout + stderr).decode('utf-8')))
-        mock = ['Time','几点', '天气', '小爱']
-        seg_list = list( jieba.cut(stdout.decode('utf-8')) )
-        transcribed = seg_list
+        # print ("stdout + stderr decode utf-8: %s"%((stdout + stderr).decode('utf-8')))
+        # mock = ['Time','几点', '天气', '小爱']
+        # seg_list = list( jieba.cut(stdout.decode('utf-8')) )
+        transcribed = stdout.decode('utf-8') # transcribed 既可以是一个字符串数组，也可以是一个字符串
         # print 'transcribed %s', transcribed
         # print 'stt print: ' + transcribed
-        self._logger.info('logger Transcribed: %r', transcribed)
-        return transcribed
+        print 'Transcribed:', transcribed
+        return [transcribed]
 
     @classmethod
     def is_available(cls):

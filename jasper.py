@@ -12,7 +12,7 @@ import argparse
 from client import tts, stt, jasperpath, diagnose
 from client.conversation import Conversation
 
-import jieba
+# import jieba
 
 # Add jasperpath.LIB_PATH to sys.path
 sys.path.append(jasperpath.LIB_PATH)
@@ -113,10 +113,10 @@ class Jasper(object):
             salutation = ("Hi 很高兴为你服务，请叫我小爱或者可可小爱。我现在可以提供天气预报，时间查询，简单的数学计算，读唐诗，讲笑话，回答百科知识等服务。你可以通过 hello 可可小爱来跟我打招呼。")
         else:
             salutation = "Hello 我是可可小爱，随时为你服务。"
-        print " ".join(jieba.cut("hello可可小爱"))
+        # print " ".join(jieba.cut("hello可可小爱"))
         self.mic.say(salutation)
 
-        conversation = Conversation("hello|小爱|可可小爱|咳咳|可可|小艾|可可|哈喽", self.mic, self.config)
+        conversation = Conversation(u"hello|小爱|可可小爱|咳咳|可可|小艾|可可|哈喽|可爱", self.mic, self.config)
         conversation.handleForever()
 
 if __name__ == "__main__":
