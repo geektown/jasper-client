@@ -64,7 +64,7 @@ class Brain(object):
         Arguments:
         text -- user input, typically speech, to be parsed by a module
         """
-        dialog = ''.join(texts).replace(u'开始检测', '')
+        dialog = ''.join(texts).replace(u'开始检测 ', '').replace('\n','')
         print dialog.encode('utf-8')
         print self.modules
         for module in self.modules:

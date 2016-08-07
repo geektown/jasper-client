@@ -28,6 +28,7 @@ def post_xiaoi_openapi(text):
 
 def handle(text, mic, profile):
     response = json.loads(post_xiaoi_openapi(text))
+    #response = request(text)
     for instruction in response:
         if instruction['cmd'] == "say":
             print "say", instruction['value']
