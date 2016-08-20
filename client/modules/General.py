@@ -16,7 +16,7 @@ def request(msg):
     return [{"cmd":"say", "value":"唐诗已经找到，即将播放。"}, {"cmd":"sleep", "value":"3"}, {"cmd":"play", "value":"/home/pi/tangshi/05-5.mp3"}, {"cmd":"say", "value":"需要再听一遍吗？"}, {"cmd":"exit"}]
 
 def post_xiaoi_openapi(text):
-    url='http://115.29.199.8:6000/openapi'
+    url='http://115.29.199.8/openapi'
     values ={'userid':u'Smith','userinput':text}
 
     jdata = json.dumps(values)             # 对数据进行JSON格式化编码
