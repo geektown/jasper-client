@@ -27,7 +27,9 @@ def post_xiaoi_openapi(text):
     return rdata
 
 def handle(text, mic, profile):
+    print "general handle", text.decode('utf-8')
     response = json.loads(post_xiaoi_openapi(text))
+    #response = request(text)
     for instruction in response:
         if instruction['cmd'] == "say":
             print "say", instruction['value']
@@ -42,9 +44,13 @@ def handle(text, mic, profile):
             listen = mic.generalListen() # 注意threadhold设置
             print 'try to listen in handle and got ' + "#".join(listen)
             if listen != None :
-                handle(text, mic, profile)
+                goOn = listen[0].replace(u'开始检测 ', '').replace('\n','').strip()
+                if not goOn == "":
+                    handle(goOn, mic, profile)
+                else:
+                    mic.say(u"没有接收到你的后续指令，对话结束喽。")
             else:
-                mic.say("there is no answer. conversation over.")
+                mic.say(u"我回答的还不错吧，对话结束喽。")
         elif instruction['cmd'] == "sleep":
             print 'now to sleep for ', instruction['value'], ' seconds'
             time.sleep(int(instruction['value']))

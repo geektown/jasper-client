@@ -38,7 +38,7 @@ class TestGeneralConversation(unittest.TestCase):
         return mic.outputs
 
     def testGeneralConversation(self):
-        query = u"状态测试"
+        query = u"红烧肉怎么做？"
         inputs = []
         outputs = self.runConversation(query, inputs, General)
         print outputs
