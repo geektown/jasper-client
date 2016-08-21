@@ -155,7 +155,7 @@ def run():
     if not check_network_connection():
         failed_checks += 1
 
-    for executable in ['phonetisaurus-g2p', 'espeak', 'say']:
+    for executable in ['phonetisaurus-g2p', '/home/pi/xunfei/Linux_voice_1.109/bin/tts_sample', 'say']:
         if not check_executable(executable):
             logger.warning("Executable '%s' is missing in $PATH", executable)
             failed_checks += 1

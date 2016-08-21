@@ -63,58 +63,7 @@ class AbstractSTTEngine(object):
     def transcribe(self, fp):
         pass
 
-class XunfeiSTT(AbstractSTTEngine):
-    """
-    The default Speech-to-Text implementation which relies on PocketSphinx.
-    """
 
-    SLUG = 'xunfei'
-    
-
-    def __init__(self):
-
-        
-
-        self._logger = logging.getLogger(__name__)
-
-        
-
-    def __del__(self):
-        os.remove(self._logfile)
-
-    @classmethod
-    def get_config(cls):
-        # FIXME: Replace this as soon as we have a config module
-        config = {}
-        # HMM dir
-        # Try to get hmm_dir from config
-        profile_path = jasperpath.config('profile.yml')
-
-
-
-        return config
-
-    def transcribe(self, fp):
-        
-        # /home/pi/xunfei/Linux_voice_1.109/bin/wav/temp.wav
-        p = subprocess.Popen(['/home/pi/xunfei/Linux_voice_1.109/bin/stt_sample', '/run/shm/001.wav'],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=False)
-        stdout,stderr = p.communicate() 
-        # transcribed = (stdout.strip('\n')).decode('utf-8') + "['JASPER']"
-        # print ("stdout + stderr decode utf-8: %s"%((stdout + stderr).decode('utf-8')))
-        # mock = ['Time','几点', '天气', '小爱']
-        # seg_list = list( jieba.cut(stdout.decode('utf-8')) )
-        transcribed = stdout.decode('utf-8') # transcribed 既可以是一个字符串数组，也可以是一个字符串
-        # print 'transcribed %s', transcribed
-        # print 'stt print: ' + transcribed
-        print 'Transcribed:', transcribed
-        return [transcribed]
-
-    @classmethod
-    def is_available(cls):
-        #return diagnose.check_python_import('pocketsphinx')
-        return diagnose.check_executable('/home/pi/xunfei/Linux_voice_1.109/bin/stt_sample')
-
-        
 class PocketSphinxSTT(AbstractSTTEngine):
     """
     The default Speech-to-Text implementation which relies on PocketSphinx.
@@ -137,7 +86,11 @@ class PocketSphinxSTT(AbstractSTTEngine):
         self._logger = logging.getLogger(__name__)
 
         # quirky bug where first import doesn't work
-        
+        try:
+            import pocketsphinx as ps
+        except:
+            import pocketsphinx as ps
+
         with tempfile.NamedTemporaryFile(prefix='psdecoder_',
                                          suffix='.log', delete=False) as f:
             self._logfile = f.name
@@ -196,7 +149,37 @@ class PocketSphinxSTT(AbstractSTTEngine):
         return config
 
     def transcribe(self, fp):
-        
+        """
+        Performs STT, transcribing an audio file and returning the result.
+
+        Arguments:
+            fp -- a file object containing audio data
+        """
+
+        fp.seek(44)
+
+        # FIXME: Can't use the Decoder.decode_raw() here, because
+        # pocketsphinx segfaults with tempfile.SpooledTemporaryFile()
+        data = fp.read()
+        self._decoder.start_utt()
+        self._decoder.process_raw(data, False, True)
+        self._decoder.end_utt()
+
+        result = self._decoder.get_hyp()
+        with open(self._logfile, 'r+') as f:
+            for line in f:
+                self._logger.debug(line.strip())
+            f.truncate()
+
+        # transcribed = [result[0]]
+        # p = subprocess.Popen(['/home/pi/xunfei/Linux_voice_1.109/bin/stt_sample'],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=False)
+        # print os.path.abspath(fp)
+        wav2write = wave.open('/run/shm/001.wav', 'w')
+        wav2write.setnchannels(1)
+        wav2write.setsampwidth(pyaudio.get_sample_size(pyaudio.paInt16))
+        wav2write.setframerate(16000)
+        wav2write.writeframesraw(data)
+        wav2write.close()
         # /home/pi/xunfei/Linux_voice_1.109/bin/wav/temp.wav
         p = subprocess.Popen(['/home/pi/xunfei/Linux_voice_1.109/bin/stt_sample', '/run/shm/001.wav'],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=False)
         stdout,stderr = p.communicate() 
@@ -212,8 +195,7 @@ class PocketSphinxSTT(AbstractSTTEngine):
 
     @classmethod
     def is_available(cls):
-        #return diagnose.check_python_import('pocketsphinx')
-        return diagnose.check_executable('/home/pi/xunfei/Linux_voice_1.109/bin/stt_sample')
+        return diagnose.check_python_import('pocketsphinx')
 
 
 class JuliusSTT(AbstractSTTEngine):

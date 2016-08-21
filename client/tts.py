@@ -73,7 +73,7 @@ class AbstractTTSEngine(object):
     def play(self, filename):
         # FIXME: Use platform-independent audio-output here
         # See issue jasperproject/jasper-client#188
-        cmd = ['aplay', '-D', 'plughw:1,0', str(filename)]
+        cmd = ['aplay', '-D', 'plughw:0,0', str(filename)]
         self._logger.debug('Executing %s', ' '.join([pipes.quote(arg)
                                                      for arg in cmd]))
         with tempfile.TemporaryFile() as f:
@@ -168,7 +168,7 @@ class EspeakTTS(AbstractTTSEngine):
     @classmethod
     def is_available(cls):
         return (super(cls, cls).is_available() and
-                diagnose.check_executable('espeak'))
+                diagnose.check_executable('/home/pi/xunfei/Linux_voice_1.109/bin/tts_sample'))
 
     def say(self, phrase):
         self._logger.debug("Saying '%s' with '%s'", phrase, self.SLUG)
@@ -650,7 +650,7 @@ def get_engine_by_slug(slug=None):
     Raises:
         ValueError if no speaker implementation is supported on this platform
     """
-
+    print "----------", slug
     if not slug or type(slug) is not str:
         raise TypeError("Invalid slug '%s'", slug)
 
